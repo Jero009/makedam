@@ -21,14 +21,14 @@ the goal is a personal best.
 ## 2. Functional Requirements
 
 ### FR1 — Player car
-- FR1.1: Player controls a car with acceleration, braking, and steering (keyboard).
+- FR1.1: The player controls a car with acceleration, braking, and steering (keyboard).
 - FR1.2: Car has arcade drift physics: velocity lags behind facing direction,
   grip reduces when turning at speed.
 - FR1.3: Car collides with trees, rocks, and obstacles; collisions slow it down.
 
 ### FR2 — Track & checkpoints
-- FR2.1: One rally stage built from tilemap: a winding dirt/gravel road through
-  grass, forest, and rocks .
+- FR2.1: One rally stage built from a tilemap: a winding dirt/gravel road through
+  grass, forest, and rocks.
 - FR2.2: 6–10 checkpoints in a fixed order; the next checkpoint is visually marked.
 - FR2.3: A lap = all checkpoints in order, back to start/finish line.
 
@@ -39,7 +39,7 @@ the goal is a personal best.
 
 ### FR4 — Game flow
 - FR4.1: Main menu: Start Race, Quit, controls overview.
-- FR4.2: Restart key returns to the start line instantly .
+- FR4.2: Restart key returns to the start line instantly.
 - FR4.3: Pause menu (Esc): Resume, Restart, Quit to menu.
 
 ### FR5 — Audio (basic)
@@ -63,6 +63,6 @@ the goal is a personal best.
 
 - TR1: Godot 4.x project, GDScript only, no paid plugins or assets.
 - TR2: Version control: git + GitHub (https://github.com/Jero009/makedam).
-- TR4: Export: Linux (X11) build + Windows build verified runnable.
-- TR5: All third-party assets credited in a CREDITS file.
+- TR3: Export: Linux (X11) build + Windows build verified runnable.
+- TR4: All third-party assets credited in a CREDITS file.
 
