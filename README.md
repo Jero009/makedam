@@ -1,3 +1,5 @@
+[Slovensko 🇸🇮](README.sl.md)
+
 # Makedam — Requirements Sheet
 
 **Project:** Makedam — 2D top-down racing game, art style inspired by GTA 1/2
