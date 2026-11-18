@@ -1,19 +1,20 @@
-# Makedam
+# Makedam — Requirements Sheet
 
 **Project:** Makedam — 2D top-down racing game, art style inspired by GTA 1/2
 **Author:** Jernej Peter
-**Date:** 2026-11-18 (v0.2 after project creation)
-**Status:** v0.2 — project initialized
+**Date:** 2026-11-18 (v0.3 — rally scope)
+**Status:** v0.3 — rally-style stage, city dropped
 **Repository:** https://github.com/Jero009/makedam
 
 ---
 
 ## 1. Project Overview
 
-A single-player, top-down 2D racing game in the visual style of Grand Theft Auto 1/2
-(low-resolution pixel-art sprites, flat top-down perspective, muted urban color palette).
-The player drives a car through a city map, passing checkpoints in order and racing
-against the clock. Lap times are recorded; the goal is a personal best.
+A single-player, top-down 2D rally racing game in the visual style of Grand Theft Auto 1/2
+(low-resolution pixel-art sprites, flat top-down perspective, muted rural color palette).
+The player drives a rally car along a dirt/gravel stage through countryside and forest,
+passing checkpoints in order and racing against the clock. Lap times are recorded;
+the goal is a personal best.
 
 - **Engine:** Godot 4.x (GDScript), Compatibility renderer (OpenGL — enables Web export)
 - **Platform:** Linux + Windows desktop export (Web export as stretch)
@@ -26,11 +27,12 @@ against the clock. Lap times are recorded; the goal is a personal best.
 - FR1.1: Player controls a car with acceleration, braking, and steering (keyboard).
 - FR1.2: Car has arcade drift physics: velocity lags behind facing direction,
   grip reduces when turning at speed.
-- FR1.3: Car collides with buildings and obstacles; collisions slow it down,
+- FR1.3: Car collides with trees, rocks, and obstacles; collisions slow it down,
   never trap the player (no getting stuck).
 
 ### FR2 — Track & checkpoints
-- FR2.1: One city track built from tilemap (roads, buildings, sidewalks, decorations).
+- FR2.1: One rally stage built from tilemap: a winding dirt/gravel road through
+  grass, forest, and rocks (rally terrain, no city).
 - FR2.2: 6–10 checkpoints in a fixed order; the next checkpoint is visually marked.
 - FR2.3: A lap = all checkpoints in order, back to start/finish line.
 
@@ -52,11 +54,13 @@ against the clock. Lap times are recorded; the goal is a personal best.
 ## 3. Art & Audio Requirements
 
 - **Style:** GTA 1/2 look — top-down pixel art, ~32×16 px car sprites,
-  limited palette (≤ 16 colors), muted urban tones (gray asphalt, brown/gray buildings).
+  limited palette (≤ 16 colors), muted rural tones (grass greens, dirt browns,
+  gray rocks, dark forest greens).
 - **Player-facing resolution:** low-res pixel art upscaled with nearest-neighbor
   (integer zoom, no blurring).
-- **Required assets:** 1 player car (4 rotation states or free rotation),
-  city tileset (~8–12 tiles), checkpoint marker, UI font (pixel font).
+- **Required assets:** 1 rally car (4 rotation states or free rotation),
+  countryside tileset (~8–12 tiles: grass, dirt road, gravel, trees, rocks,
+  hay bales), checkpoint marker, UI font (pixel font).
 - **Tools:** LibreSprite (pixel art), jsfxr (SFX), free music loop (OpenGameArt / LMMS).
 
 ## 4. Technical Requirements
@@ -77,10 +81,10 @@ against the clock. Lap times are recorded; the goal is a personal best.
 - S2: Second track.
 - S3: Minimap.
 - S4: Web export (itch.io page).
-- S5: Traffic cars as moving obstacles.
+- S5: Point-to-point stage mode (start → finish, instead of laps).
 
-**Explicitly out of scope:** pedestrians, weapons, police, story, multiplayer,
-saves beyond best-lap times.
+**Explicitly out of scope:** pedestrians, weapons, police, traffic, story,
+multiplayer, city environments, saves beyond best-lap times.
 
 ## 6. Milestones (to be dated once the real deadline is set)
 
