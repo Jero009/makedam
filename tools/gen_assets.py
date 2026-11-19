@@ -84,38 +84,39 @@ def gen_sand():
     save(im, "sand.png")
 
 
-# ---- road corners: one elbow, derived via transforms ----
+# ---- road corners: full-width road with a carved outer grass arc ----
 def gen_corners():
-    road = Image.open(os.path.join(ASSETS, "road-straight.png")).convert("RGB")
-    hroad = road.transpose(Image.ROTATE_90)  # streaks now horizontal
+    vroad = Image.open(os.path.join(ASSETS, "road-straight.png")).convert("RGB")
+    hroad = vroad.transpose(Image.ROTATE_90)
+    vp, hp = vroad.load(), hroad.load()
 
-    # elbow connecting WEST edge + SOUTH edge; grass in top-right quadrant
-    corner = hroad.copy()
-    grass = speckled(GREEN_DARK, GREEN_LIGHT, 0.10)
-    corner.paste(grass.crop((0, 0, TILE // 2, TILE // 2)), (TILE // 2, 0))
-
+    # elbow connecting WEST + SOUTH edges: grass carved into the NE outer corner
+    corner = Image.new("RGB", (TILE, TILE))
     px = corner.load()
-    # speckle blend along the two inner edges (mirrors road-straight's edges)
-    for i in range(1, 3):
-        for _ in range(6):
-            x = TILE // 2 + i
-            y = random.randrange(TILE // 2)
-            if random.random() < 0.5:
-                px[x, y] = random.choice([GREEN_DARK, GREEN_LIGHT])
-        for _ in range(6):
-            x = random.randrange(TILE // 2, TILE)
-            y = TILE // 2 - i
-            if random.random() < 0.5:
-                px[x, y] = random.choice([GREEN_DARK, GREEN_LIGHT])
-        # road side of the boundary: grass speckles
-        for _ in range(4):
-            x = TILE // 2 - i
-            y = random.randrange(TILE // 2)
-            px[x, y] = random.choice([GREEN_DARK, GREEN_LIGHT])
-        for _ in range(4):
-            x = random.randrange(TILE // 2, TILE)
-            y = TILE // 2 + i - 1
-            px[x, y] = random.choice([GREEN_DARK, GREEN_LIGHT])
+    for y in range(TILE):
+        for x in range(TILE):
+            # west half inherits vertical-road texture, east half horizontal;
+            # random mix at the seam hides the texture-direction switch
+            if abs(x - TILE // 2) <= 2:
+                src = vp if random.random() < 0.5 else hp
+            else:
+                src = vp if x < TILE // 2 else hp
+            px[x, y] = src[x, y]
+
+    # carve the outer grass corner: quarter arc centered on the tile middle
+    cx, cy, R = TILE // 2, TILE // 2, 18.0
+    for y in range(TILE // 2):
+        for x in range(TILE // 2, TILE):
+            d = math.hypot(x - cx, cy - y) + random.uniform(-1.5, 1.5)
+            if d > R:
+                px[x, y] = random.choice([GREEN_DARK, GREEN_DARK, GREEN_LIGHT])
+            elif d > R - 2.5:
+                # blend band along the arc: mixed grass/road speckles
+                r = random.random()
+                if r < 0.5:
+                    px[x, y] = random.choice([GREEN_DARK, GREEN_LIGHT])
+                elif r < 0.7:
+                    px[x, y] = random.choice(GRAYS[:3])
 
     variants = {
         "road-corner-es.png": corner.transpose(Image.FLIP_LEFT_RIGHT),   # East + South
