@@ -11,7 +11,7 @@ def parse_ase(path):
     layers, cels = [], []
     for fi in range(frames):
         old_chunks = struct.unpack_from('<H', data, off+6)[0]
-        chunks = struct.unpack_from('<I', data, off+10)[0] if old_chunks == 0xFFFF else old_chunks
+        chunks = struct.unpack_from('<I', data, off+12)[0] if old_chunks == 0xFFFF else old_chunks
         off += 16
         for ci in range(chunks):
             csize = struct.unpack_from('<I', data, off)[0]
