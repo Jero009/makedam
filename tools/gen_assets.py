@@ -84,39 +84,38 @@ def gen_sand():
     save(im, "sand.png")
 
 
-# ---- road corners: full-width road with a carved outer grass arc ----
+# ---- road corners: 45-degree diagonal makadam band ----
 def gen_corners():
     vroad = Image.open(os.path.join(ASSETS, "road-straight.png")).convert("RGB")
     hroad = vroad.transpose(Image.ROTATE_90)
     vp, hp = vroad.load(), hroad.load()
 
-    # elbow connecting WEST + SOUTH edges: grass carved into the NE outer corner
+    def grass_speckle():
+        return random.choice([GREEN_DARK, GREEN_DARK, GREEN_DARK, GREEN_LIGHT])
+
+    # elbow connecting WEST + SOUTH edges: diagonal band from west-center to south-center,
+    # grass in the outer (NE) corner and thin slivers in NW/SE.
     corner = Image.new("RGB", (TILE, TILE))
     px = corner.load()
+    HW = 14.0  # band half-width -> ~28px road, matching the full-width straights
     for y in range(TILE):
         for x in range(TILE):
-            # west half inherits vertical-road texture, east half horizontal;
-            # random mix at the seam hides the texture-direction switch
-            if abs(x - TILE // 2) <= 2:
+            d = abs(y - (x + 16)) + random.uniform(-1.0, 1.0)
+            if d <= HW:
+                # inside the band: makadam, texture mixed so no streak seam
                 src = vp if random.random() < 0.5 else hp
-            else:
-                src = vp if x < TILE // 2 else hp
-            px[x, y] = src[x, y]
-
-    # carve the outer grass corner: quarter arc centered on the tile middle
-    cx, cy, R = TILE // 2, TILE // 2, 18.0
-    for y in range(TILE // 2):
-        for x in range(TILE // 2, TILE):
-            d = math.hypot(x - cx, cy - y) + random.uniform(-1.5, 1.5)
-            if d > R:
-                px[x, y] = random.choice([GREEN_DARK, GREEN_DARK, GREEN_LIGHT])
-            elif d > R - 2.5:
-                # blend band along the arc: mixed grass/road speckles
+                px[x, y] = src[x, y]
+            elif d <= HW + 2.5:
+                # blend edge: grass bleeding into road
                 r = random.random()
-                if r < 0.5:
-                    px[x, y] = random.choice([GREEN_DARK, GREEN_LIGHT])
-                elif r < 0.7:
+                if r < 0.45:
+                    px[x, y] = grass_speckle()
+                elif r < 0.65:
                     px[x, y] = random.choice(GRAYS[:3])
+                else:
+                    px[x, y] = (hp if x > y - 16 else vp)[x, y]
+            else:
+                px[x, y] = grass_speckle() if random.random() < 0.12 else GREEN_DARK
 
     variants = {
         "road-corner-es.png": corner.transpose(Image.FLIP_LEFT_RIGHT),   # East + South
