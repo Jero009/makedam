@@ -222,6 +222,13 @@ def gen_sfx():
     write_wav("crash.wav", crash)
 
 
+
+
+def gen_horizontal_road():
+    im = Image.open(os.path.join(ASSETS, "road-straight.png")).convert("RGB")
+    save(im.transpose(Image.ROTATE_90), "road-straight-h.png")
+
+
 if __name__ == "__main__":
     gen_grass()
     gen_sand()
@@ -229,4 +236,5 @@ if __name__ == "__main__":
     gen_rock()
     gen_checkpoint()
     gen_sfx()
+    gen_horizontal_road()
     print("done — start/finish left for hand-drawing")
